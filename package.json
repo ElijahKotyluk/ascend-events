@@ -1,0 +1,47 @@
+{
+  "name": "ts-eventemitter",
+  "version": "0.0.0",
+  "description": "a simple event emitter for learning and packaging purposes.",
+  "main": "index.js",
+  "author": "Elijah Kotyluk",
+  "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.[jt]s": [
+      "yarn run lint:fix"
+    ],
+    "/tests/*.spec.[jt]s": [
+      "yarn run test:unit"
+    ]
+  },
+  "scripts": {
+    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "build": "tsc",
+    "lint": "wotan",
+    "lint:fix": "wotan --fix",
+    "test:coverage": "jest --coverage",
+    "test:unit": "jest",
+    "commit": "yarn git-cz",
+    "clean": "rm -rf /dist/** /node_modules"
+  },
+  "devDependencies": {
+    "@fimbul/valtyr": "^0.21.0",
+    "@fimbul/wotan": "^0.21.1",
+    "@types/jest": "^24.0.25",
+    "babel-jest": "^24.9.0",
+    "commitizen": "^4.0.3",
+    "husky": "^3.1.0",
+    "jest": "^24.9.0",
+    "lint-staged": "^9.5.0",
+    "ts-jest": "^24.2.0",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4"
+  },
+  "files": [
+    "dist/**/*"
+  ]
+}

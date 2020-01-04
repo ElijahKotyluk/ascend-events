@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - "10.16.2"
+cache:
+  yarn: true
+  directories:
+    - node_modules
+install:
+  - yarn
+before_script:
+  - yarn global add codecov
+script:
+  - yarn run lint
+  - yarn run test:coverage
+  - codecov -f coverage/*.json
