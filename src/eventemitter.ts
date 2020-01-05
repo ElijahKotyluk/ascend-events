@@ -1,11 +1,3 @@
-const isEventName = (eventName: string | symbol): boolean => {
-    if (typeof eventName !== 'string' || 'symbol') {
-        return false;
-    }
-
-    return true;
-};
-
 export default class EventEmitter {
     public maxListeners: number;
     public events: Map<string | symbol, Function[]>;
