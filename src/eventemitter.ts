@@ -48,4 +48,22 @@ export default class EventEmitter {
 
         return listeners;
     }
+
+    public removeAllListeners(eventName?: string | symbol): EventEmitter {
+        if (this.events.size <= 0) {
+            throw new Error('There are currently no event listeners to remove.');
+        }
+
+        if (eventName) {
+            if (!this.events.has(eventName.toString())) {
+                throw new Error(`Event listener: ${String(eventName)}, was not found.`);
+            }
+
+            this.events.delete(eventName);
+        }
+
+        this.events.clear();
+
+        return this;
+    }
 }
