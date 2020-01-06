@@ -15,6 +15,10 @@ describe('EventEmitter', () => {
 
         eventEmitter.addListener('test', () => null);
         expect(eventEmitter.events.size).toBe(1);
+
+        eventEmitter.maxListeners = 1;
+
+        expect(() => eventEmitter.addListener('test', () => null)).toThrow(Error);
     });
 
     it('getListenerCount', () => {
