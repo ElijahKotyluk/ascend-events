@@ -1,10 +1,10 @@
 export default class EventEmitter {
-    public listeners: number;
+    public maxListeners: number;
     public events: Map<string | symbol, Function[]>;
 
     constructor() {
         this.events = new Map();
-        this.listeners = 10;
+        this.maxListeners = 10;
     }
 
     public getListenerCount(eventName: string | symbol): number {
@@ -23,16 +23,29 @@ export default class EventEmitter {
             this.events.set(eventName, [listener]);
         }
 
-        if (this.listeners > 0 && this.getListenerCount(eventName) > this.listeners) {
-            throw new Error(`The maximum amount of listeners should not exceed ${this.listeners}.`);
+        if (this.maxListeners > 0 && this.getListenerCount(eventName) > this.maxListeners) {
+            throw new Error(`The maximum amount of listeners should not exceed maxListener: ${this.maxListeners}.`);
         }
         return this;
     }
 
+    public setMaxListeners(num: number): EventEmitter {
+        if (num <= 0) {
+            throw new Error(`Expected a positive number > 0, and received: ${num}.`);
+        }
 
-    public setListenerCount(num: number): EventEmitter {
-        this.listeners = num;
+        this.maxListeners = num;
 
         return this;
+    }
+
+    public listeners(eventName: string | symbol): Function[] {
+        if (!this.events.has(eventName)) {
+            return [];
+        }
+
+        const listeners = this.events.get(eventName) as Function[];
+
+        return listeners;
     }
 }
