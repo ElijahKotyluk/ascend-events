@@ -19,10 +19,9 @@
     ]
   },
   "scripts": {
-    "lint:wotan": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "lint": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
     "build": "tsc",
-    "lint": "wotan",
-    "lint:fix": "wotan --fix",
+    "lint:fix": "yarn lint --fix",
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "commit": "yarn git-cz",

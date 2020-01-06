@@ -56,7 +56,7 @@ describe('EventEmitter', () => {
         expect(() => eventEmitter.removeAllListeners()).toThrow('There are currently no event listeners to remove.');
 
         eventEmitter.addListener('test', () => null);
-        
+
         expect(eventEmitter.events.size).toBe(1);
         expect(() => eventEmitter.removeAllListeners('nonExistentListener')).toThrow('Event listener: nonExistentListener, was not found.');
         expect(() => eventEmitter.removeAllListeners('test')).not.toThrow();
