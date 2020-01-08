@@ -62,4 +62,23 @@ describe('EventEmitter', () => {
         expect(() => eventEmitter.removeAllListeners('test')).not.toThrow();
         expect(eventEmitter.events.size).toBe(0);
     });
+
+    it('removeListener', () => {
+        const eventEmitter = new EventEmitter();
+
+        expect(() => eventEmitter.removeListener('nonExistentListener', () => null)).toThrow();
+
+        eventEmitter.addListener('test', function (a: number, b: number) { return a + b; });
+
+        expect(() => eventEmitter.removeListener('test', (a: number, b: number) => a + b)).not.toThrow();
+        expect(eventEmitter.events.size).toBe(0);
+
+        eventEmitter.addListener('test', () => null);
+        eventEmitter.addListener('test', () => null);
+        eventEmitter.addListener('anotherTest', () => 1);
+
+        expect(eventEmitter.events.size).toBe(2);
+        expect(() => eventEmitter.removeListener('test', () => null)).not.toThrow();
+        expect(eventEmitter.events.size).toBe(1);
+    });
 });

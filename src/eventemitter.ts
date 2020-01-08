@@ -66,4 +66,29 @@ export default class EventEmitter {
 
         return this;
     }
+
+    /**
+     * @TODO 1) Write method to check for multiple listeners under one eventName key and optionally remove more
+     * than one if `count: number` parameter is provided.
+     * 2) Find better way to compare functions
+     * 3) maybe use indexOf instead of for of?
+     * @param {string | symbol} eventName
+     * @param {Function} listener
+     * @param {number | undefined} count
+     * @returns {EventEmitter}
+     */
+    public removeListener(eventName: string | symbol, listener: Function, count?: number): EventEmitter {
+        if (!this.events.has(eventName.toString())) {
+            throw new Error(`Event listener: ${String(eventName)}, was not found.`);
+        }
+
+        const events = this.events.get(eventName) as Function[];
+
+        for (const event of events) {
+            if (event.toString() === listener.toString()) {
+                this.events.delete(eventName);
+            }
+        }
+        return this;
+    }
 }
