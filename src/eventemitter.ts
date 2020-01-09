@@ -49,6 +49,12 @@ export default class EventEmitter {
         return listeners;
     }
 
+    public on(eventName: string | symbol, listener: Function): EventEmitter {
+        this.addListener(eventName, listener);
+
+        return this;
+    }
+
     public removeAllListeners(eventName?: string | symbol): EventEmitter {
         if (this.events.size <= 0) {
             throw new Error('There are currently no event listeners to remove.');
@@ -68,16 +74,14 @@ export default class EventEmitter {
     }
 
     /**
-     * @TODO 1) Write method to check for multiple listeners under one eventName key and optionally remove more
-     * than one if `count: number` parameter is provided.
-     * 2) Find better way to compare functions
-     * 3) maybe use indexOf instead of for of?
+     * @TODO
+     * 1) Find better way to compare functions
+     * 2) maybe use `indexOf` instead of `for of`?
      * @param {string | symbol} eventName
      * @param {Function} listener
-     * @param {number | undefined} count
      * @returns {EventEmitter}
      */
-    public removeListener(eventName: string | symbol, listener: Function, count?: number): EventEmitter {
+    public removeListener(eventName: string | symbol, listener: Function): EventEmitter {
         if (!this.events.has(eventName.toString())) {
             throw new Error(`Event listener: ${String(eventName)}, was not found.`);
         }

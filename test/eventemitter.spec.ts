@@ -31,7 +31,7 @@ describe('EventEmitter', () => {
         expect(eventEmitter.getListenerCount('test')).toBe(1);
     });
 
-    it('setListenerCount', () => {
+    it('setMaxListeners', () => {
         const eventEmitter = new EventEmitter();
 
         expect(eventEmitter.maxListeners).toBe(10);
@@ -48,6 +48,15 @@ describe('EventEmitter', () => {
 
         eventEmitter.addListener('test', () => null);
         expect(eventEmitter.listeners('test')).toHaveLength(1);
+    });
+
+    it('on', () => {
+        const eventEmitter = new EventEmitter();
+
+        eventEmitter.on('test', () => true);
+
+        expect(eventEmitter.getListenerCount('test')).toBe(1);
+        expect(eventEmitter.on('test', () => false)).toBeInstanceOf(EventEmitter);
     });
 
     it('removeAllListeners', () => {
