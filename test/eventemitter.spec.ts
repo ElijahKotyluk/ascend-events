@@ -7,6 +7,7 @@ describe('EventEmitter', () => {
 
         expect(eventEmitter).toBeDefined();
         expect(eventEmitter).toBeInstanceOf(EventEmitter);
+        expect(eventEmitter.events).toBeInstanceOf(Map);
         expect(eventEmitter.maxListeners).toBe(10);
     });
 
@@ -14,6 +15,7 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
 
         eventEmitter.addListener('test', () => null);
+
         expect(eventEmitter.events.size).toBe(1);
 
         eventEmitter.maxListeners = 1;
@@ -24,10 +26,9 @@ describe('EventEmitter', () => {
     it('getListenerCount', () => {
         const eventEmitter = new EventEmitter();
 
-        expect(eventEmitter.getListenerCount('nonExistentListener')).toBe(0);
-
         eventEmitter.addListener('test', () => null);
 
+        expect(eventEmitter.getListenerCount('nonExistentListener')).toBe(0);
         expect(eventEmitter.getListenerCount('test')).toBe(1);
     });
 
@@ -43,10 +44,10 @@ describe('EventEmitter', () => {
     it('listeners', () => {
         const eventEmitter = new EventEmitter();
 
+        eventEmitter.addListener('test', () => null);
+
         expect(eventEmitter.listeners('nonExistentListener')).toStrictEqual([]);
         expect(eventEmitter.listeners('nonExistentListener')).toHaveLength(0);
-
-        eventEmitter.addListener('test', () => null);
         expect(eventEmitter.listeners('test')).toHaveLength(1);
     });
 
@@ -57,7 +58,7 @@ describe('EventEmitter', () => {
 
         expect(eventEmitter.getListenerCount('test')).toBe(1);
         expect(eventEmitter.on('test', () => false)).toBeInstanceOf(EventEmitter);
-        expect(eventEmitter)
+        expect(eventEmitter.events.has('test')).toBeTruthy();
     });
 
     it('prependListener', () => {
@@ -92,9 +93,7 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
 
         expect(() => eventEmitter.removeListener('nonExistentListener', () => null)).toThrow();
-
-        eventEmitter.addListener('test', function(a: number, b: number) { return a + b; });
-
+        expect(() => eventEmitter.addListener('test', function(a: number, b: number) { return a + b; })).not.toThrow();
         expect(() => eventEmitter.removeListener('test', (a: number, b: number) => a + b)).not.toThrow();
         expect(eventEmitter.events.size).toBe(0);
 
