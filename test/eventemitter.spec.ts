@@ -57,6 +57,22 @@ describe('EventEmitter', () => {
 
         expect(eventEmitter.getListenerCount('test')).toBe(1);
         expect(eventEmitter.on('test', () => false)).toBeInstanceOf(EventEmitter);
+        expect(eventEmitter)
+    });
+
+    it('prependListener', () => {
+        const eventEmitter = new EventEmitter();
+
+        eventEmitter.addListener('test', () => 'addedListener');
+        eventEmitter.prependListener('test', () => 'prependedListener');
+
+        const events = eventEmitter.events.get('test') as Function[];
+
+        expect(events[0].toString()).toEqual((() => 'prependedListener').toString());
+        expect(events[1].toString()).toEqual((() => 'addedListener').toString());
+        expect(
+            events[1].toString() === (() => 'prependListener').toString(),
+            ).toBeFalsy();
     });
 
     it('removeAllListeners', () => {
@@ -77,7 +93,7 @@ describe('EventEmitter', () => {
 
         expect(() => eventEmitter.removeListener('nonExistentListener', () => null)).toThrow();
 
-        eventEmitter.addListener('test', function (a: number, b: number) { return a + b; });
+        eventEmitter.addListener('test', function(a: number, b: number) { return a + b; });
 
         expect(() => eventEmitter.removeListener('test', (a: number, b: number) => a + b)).not.toThrow();
         expect(eventEmitter.events.size).toBe(0);

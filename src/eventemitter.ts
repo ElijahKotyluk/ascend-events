@@ -55,6 +55,18 @@ export default class EventEmitter {
         return this;
     }
 
+    public prependListener(eventName: string | symbol, listener: Function): EventEmitter {
+        if (this.events.has(eventName)) {
+            const listeners = this.events.get(eventName) as Function[];
+
+            listeners.unshift(listener);
+        } else {
+            this.events.set(eventName, [listener]);
+        }
+
+        return this;
+    }
+
     public removeAllListeners(eventName?: string | symbol): EventEmitter {
         if (this.events.size <= 0) {
             throw new Error('There are currently no event listeners to remove.');
