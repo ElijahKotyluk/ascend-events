@@ -1,4 +1,4 @@
-import { EventEmitter } from '../src';
+import { EventEmitter, Listener } from '../src';
 
 describe('EventEmitter', () => {
 
@@ -14,9 +14,13 @@ describe('EventEmitter', () => {
     it('addListener', () => {
         const eventEmitter = new EventEmitter();
 
-        eventEmitter.addListener('test', () => null);
-
+        eventEmitter.addListener('test', () => 'test 1');
+        eventEmitter.addListener('test', () => 'test 2');
         expect(eventEmitter.events.size).toBe(1);
+        expect(eventEmitter.events.get('test') as Listener[]).toHaveLength(2);
+
+        eventEmitter.addListener('anotherTest', () => 'another test');
+        expect(eventEmitter.events.size).toBe(2);
 
         eventEmitter.maxListeners = 1;
 
@@ -67,10 +71,10 @@ describe('EventEmitter', () => {
         eventEmitter.addListener('test', () => 'addedListener');
         eventEmitter.prependListener('test', () => 'prependedListener');
 
-        const events = eventEmitter.events.get('test') as Function[];
+        const events = eventEmitter.events.get('test') as Listener[];
 
-        expect(events[0].toString()).toEqual((() => 'prependedListener').toString());
-        expect(events[1].toString()).toEqual((() => 'addedListener').toString());
+        expect(events[0].fn.toString()).toEqual((() => 'prependedListener').toString());
+        expect(events[1].fn.toString()).toEqual((() => 'addedListener').toString());
         expect(
             events[1].toString() === (() => 'prependListener').toString(),
             ).toBeFalsy();

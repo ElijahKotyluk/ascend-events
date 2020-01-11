@@ -1,32 +1,52 @@
+export interface Listener {
+    fn: Function;
+    once: boolean;
+}
+
 export default class EventEmitter {
     public maxListeners: number;
-    public events: Map<string | symbol, Function[]>;
+    public events: Map<string | symbol, Listener[]>;
 
     constructor() {
         this.events = new Map();
         this.maxListeners = 10;
     }
 
-    public getListenerCount(eventName: string | symbol): number {
+    private _addListener(
+            eventName: string | symbol,
+            listener: Function,
+            once: boolean,
+        ): EventEmitter {
+
         if (this.events.has(eventName)) {
-            return (this.events.get(eventName) as Function[]).length;
+            const listeners = this.events.get(eventName) as Listener[];
+            listeners.push({ fn: listener, once: false});
         } else {
-            return 0;
+            this.events.set(eventName, [{ fn: listener, once: false }]);
         }
+
+        if (
+            this.maxListeners > 0 &&
+            this.getListenerCount(eventName) > this.maxListeners
+        ) {
+            throw new Error(
+            `The maximum amount of listeners should not exceed maxListener: ${this.maxListeners}.`,
+            );
+        }
+
+        return this;
     }
 
     public addListener(eventName: string | symbol, listener: Function): EventEmitter {
-        if (this.events.has(eventName)) {
-            const listeners = this.events.get(eventName) as Function[];
-            listeners.push(listener);
-        } else {
-            this.events.set(eventName, [listener]);
-        }
+        return this._addListener(eventName, listener, false);
+    }
 
-        if (this.maxListeners > 0 && this.getListenerCount(eventName) > this.maxListeners) {
-            throw new Error(`The maximum amount of listeners should not exceed maxListener: ${this.maxListeners}.`);
+    public getListenerCount(eventName: string | symbol): number {
+        if (this.events.has(eventName)) {
+            return (this.events.get(eventName) as Listener[]).length;
+        } else {
+            return 0;
         }
-        return this;
     }
 
     public setMaxListeners(num: number): EventEmitter {
@@ -39,29 +59,33 @@ export default class EventEmitter {
         return this;
     }
 
-    public listeners(eventName: string | symbol): Function[] {
+    public listeners(eventName: string | symbol): Listener[] {
         if (!this.events.has(eventName)) {
             return [];
         }
 
-        const listeners = this.events.get(eventName) as Function[];
+        const listeners = this.events.get(eventName) as Listener[];
 
         return listeners;
     }
 
     public on(eventName: string | symbol, listener: Function): EventEmitter {
-        this.addListener(eventName, listener);
+        this._addListener(eventName, listener, false);
 
         return this;
     }
 
+    public once(eventName: string | symbol, listener: Function): EventEmitter {
+        return this._addListener(eventName, listener, true);
+    }
+
     public prependListener(eventName: string | symbol, listener: Function): EventEmitter {
         if (this.events.has(eventName)) {
-            const listeners = this.events.get(eventName) as Function[];
+            const listeners = this.events.get(eventName) as Listener[];
 
-            listeners.unshift(listener);
+            listeners.unshift({ fn: listener, once: false });
         } else {
-            this.events.set(eventName, [listener]);
+            this.events.set(eventName, [{ fn: listener, once: false }]);
         }
 
         return this;
@@ -98,10 +122,10 @@ export default class EventEmitter {
             throw new Error(`Event listener: ${String(eventName)}, was not found.`);
         }
 
-        const events = this.events.get(eventName) as Function[];
+        const events = this.events.get(eventName) as Listener[];
 
         for (const event of events) {
-            if (event.toString() === listener.toString()) {
+            if (event.fn.toString() === listener.toString()) {
                 this.events.delete(eventName);
             }
         }
