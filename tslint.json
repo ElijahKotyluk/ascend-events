@@ -12,6 +12,7 @@
             ["String", "Use `string` instead."],
             ["Symbol", "Use `symbol` instead."]
         ],
+        "member-ordering": [false],
         "quotemark": [
             true,
             "single"
