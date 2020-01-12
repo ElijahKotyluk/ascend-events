@@ -2,7 +2,8 @@
   "name": "ts-eventemitter",
   "version": "0.0.0",
   "description": "a simple event emitter for learning and packaging purposes.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "author": "Elijah Kotyluk",
   "license": "MIT",
   "husky": {
@@ -25,7 +26,7 @@
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "commit": "yarn git-cz",
-    "clean": "rm -rf /dist/** /node_modules"
+    "clean": "rm -rf /dist/** /node_modules/"
   },
   "devDependencies": {
     "@fimbul/valtyr": "^0.21.0",

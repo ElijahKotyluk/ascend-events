@@ -41,6 +41,26 @@ export default class EventEmitter {
         return this._addListener(eventName, listener, false);
     }
 
+    public emit(eventName: string | symbol, ...args: any[]): EventEmitter {
+        if (this.events.has(eventName)) {
+            const listeners = this.events.get(eventName) as Listener[];
+
+            for (const listener of listeners) {
+                try {
+                    listener.fn.apply(this, args);
+
+                    if (listener.once) {
+                        this.removeListener(eventName, listener.fn);
+                    }
+                } catch (err) {
+                    throw err;
+                }
+            }
+        }
+
+        return this;
+    }
+
     public getListenerCount(eventName: string | symbol): number {
         if (this.events.has(eventName)) {
             return (this.events.get(eventName) as Listener[]).length;
@@ -67,6 +87,12 @@ export default class EventEmitter {
         const listeners = this.events.get(eventName) as Listener[];
 
         return listeners;
+    }
+
+    public off(eventName: string | symbol, listener: Function): EventEmitter {
+        this.removeListener(eventName, listener);
+
+        return this;
     }
 
     public on(eventName: string | symbol, listener: Function): EventEmitter {

@@ -27,6 +27,22 @@ describe('EventEmitter', () => {
         expect(() => eventEmitter.addListener('test', () => null)).toThrow(Error);
     });
 
+    it('emit', () => {
+        const eventEmitter = new EventEmitter();
+        const fn = jest.fn();
+
+        eventEmitter.addListener('test', fn);
+        eventEmitter.emit('test', true);
+
+        expect(fn).toHaveBeenCalledTimes(1);
+        expect(fn).toHaveBeenCalledWith(true);
+
+        eventEmitter.removeListener('test', fn);
+        eventEmitter.emit('test', false);
+
+        expect(fn).not.toHaveBeenLastCalledWith(false);
+    });
+
     it('getListenerCount', () => {
         const eventEmitter = new EventEmitter();
 
@@ -53,6 +69,18 @@ describe('EventEmitter', () => {
         expect(eventEmitter.listeners('nonExistentListener')).toStrictEqual([]);
         expect(eventEmitter.listeners('nonExistentListener')).toHaveLength(0);
         expect(eventEmitter.listeners('test')).toHaveLength(1);
+    });
+
+    it('off', () => {
+        const eventEmitter = new EventEmitter();
+
+        eventEmitter.addListener('test', () => null);
+
+        expect(eventEmitter.getListenerCount('test')).toBe(1);
+
+        eventEmitter.off('test', () => null);
+
+        expect(eventEmitter.getListenerCount('test')).toBe(0);
     });
 
     it('on', () => {
@@ -97,7 +125,7 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
 
         expect(() => eventEmitter.removeListener('nonExistentListener', () => null)).toThrow();
-        expect(() => eventEmitter.addListener('test', function(a: number, b: number) { return a + b; })).not.toThrow();
+        expect(() => eventEmitter.addListener('test', (a: number, b: number) => a + b)).not.toThrow();
         expect(() => eventEmitter.removeListener('test', (a: number, b: number) => a + b)).not.toThrow();
         expect(eventEmitter.events.size).toBe(0);
 
