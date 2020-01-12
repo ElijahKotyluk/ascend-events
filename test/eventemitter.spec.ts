@@ -125,8 +125,7 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
 
         expect(() => eventEmitter.removeListener('nonExistentListener', () => null)).toThrow();
-        // tslint:disable-next-line:only-arrow-functions
-        expect(() => eventEmitter.addListener('test', function(a: number, b: number) { return a + b; })).not.toThrow();
+        expect(() => eventEmitter.addListener('test', (a: number, b: number) => a + b)).not.toThrow();
         expect(() => eventEmitter.removeListener('test', (a: number, b: number) => a + b)).not.toThrow();
         expect(eventEmitter.events.size).toBe(0);
 
