@@ -89,6 +89,12 @@ export default class EventEmitter {
         return listeners;
     }
 
+    public off(eventName: string | symbol, listener: Function): EventEmitter {
+        this.removeListener(eventName, listener);
+
+        return this;
+    }
+
     public on(eventName: string | symbol, listener: Function): EventEmitter {
         this._addListener(eventName, listener, false);
 
