@@ -5,10 +5,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "Elijah Kotyluk",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ElijahKotyluk/ts-lexer"
-  },
+  "repository": "git@github.com:ElijahKotyluk/ts-lexer.git",
   "license": "MIT",
   "husky": {
     "hooks": {
