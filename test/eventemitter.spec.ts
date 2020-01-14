@@ -2,10 +2,9 @@ import { EventEmitter, Listener } from '../src';
 
 describe('EventEmitter', () => {
 
-    it('should instantiate a new event emitter', () => {
+    it('should create a new event emitter instance', () => {
         const eventEmitter = new EventEmitter();
 
-        expect(eventEmitter).toBeDefined();
         expect(eventEmitter).toBeInstanceOf(EventEmitter);
         expect(eventEmitter.events).toBeInstanceOf(Map);
         expect(eventEmitter.maxListeners).toBe(10);
@@ -31,16 +30,24 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
         const fn = jest.fn();
 
-        eventEmitter.addListener('test', fn);
+        eventEmitter.once('test', fn);
+
+        expect(eventEmitter.events.get('test')).toHaveLength(1);
+
         eventEmitter.emit('test', true);
 
+        expect(eventEmitter.events.get('test')).toBeUndefined();
         expect(fn).toHaveBeenCalledTimes(1);
         expect(fn).toHaveBeenCalledWith(true);
 
-        eventEmitter.removeListener('test', fn);
-        eventEmitter.emit('test', false);
+        eventEmitter.addListener('test', fn);
+        eventEmitter.emit('test', true);
+        eventEmitter.addListener('error', () => { throw new Error(); });
 
-        expect(fn).not.toHaveBeenLastCalledWith(false);
+        expect(fn).toHaveBeenCalledTimes(2);
+        expect(fn).toHaveBeenLastCalledWith(true);
+        expect(() => eventEmitter.emit('error')).toThrowError();
+        expect(eventEmitter.emit('doesntExist')).toBeInstanceOf(EventEmitter);
     });
 
     it('getListenerCount', () => {
@@ -59,6 +66,9 @@ describe('EventEmitter', () => {
 
         eventEmitter.setMaxListeners(5);
         expect(eventEmitter.maxListeners).toBe(5);
+
+        expect(() => eventEmitter.setMaxListeners(0)).toThrowError();
+        expect(() => eventEmitter.setMaxListeners(-1)).toThrowError();
     });
 
     it('listeners', () => {
@@ -97,15 +107,29 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
 
         eventEmitter.addListener('test', () => 'addedListener');
-        eventEmitter.prependListener('test', () => 'prependedListener');
+        eventEmitter.prependListener('test', () => 'prependedListener', false);
+        eventEmitter.prependListener('testTwo', () => 'testTwo', false);
 
         const events = eventEmitter.events.get('test') as Listener[];
 
+        expect(eventEmitter.events.size).toBe(2);
         expect(events[0].fn.toString()).toEqual((() => 'prependedListener').toString());
         expect(events[1].fn.toString()).toEqual((() => 'addedListener').toString());
         expect(
             events[1].toString() === (() => 'prependListener').toString(),
             ).toBeFalsy();
+    });
+
+    it('prependOnceListener', () => {
+        const eventEmitter = new EventEmitter();
+
+        eventEmitter.prependOnceListener('test', () => 'once');
+
+        expect(eventEmitter.events.size).toBe(1);
+
+        eventEmitter.emit('test');
+
+        expect(eventEmitter.events.size).toBe(0);
     });
 
     it('removeAllListeners', () => {
@@ -114,10 +138,14 @@ describe('EventEmitter', () => {
         expect(() => eventEmitter.removeAllListeners()).toThrow('There are currently no event listeners to remove.');
 
         eventEmitter.addListener('test', () => null);
+        eventEmitter.addListener('testTwo', () => 'testTwo');
 
-        expect(eventEmitter.events.size).toBe(1);
+        expect(eventEmitter.events.size).toBe(2);
         expect(() => eventEmitter.removeAllListeners('nonExistentListener')).toThrow('Event listener: nonExistentListener, was not found.');
         expect(() => eventEmitter.removeAllListeners('test')).not.toThrow();
+        expect(eventEmitter.events.size).toBe(1);
+
+        eventEmitter.removeAllListeners();
         expect(eventEmitter.events.size).toBe(0);
     });
 
@@ -135,6 +163,7 @@ describe('EventEmitter', () => {
 
         expect(eventEmitter.events.size).toBe(2);
         expect(() => eventEmitter.removeListener('test', () => null)).not.toThrow();
+        expect(() => eventEmitter.removeListener('test', () => 'errored')).toThrow();
         expect(eventEmitter.events.size).toBe(1);
     });
 });
