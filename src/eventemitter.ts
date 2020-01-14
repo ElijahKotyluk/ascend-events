@@ -20,9 +20,9 @@ export default class EventEmitter {
 
         if (this.events.has(eventName)) {
             const listeners = this.events.get(eventName) as Listener[];
-            listeners.push({ fn: listener, once: false});
+            listeners.push({ fn: listener, once});
         } else {
-            this.events.set(eventName, [{ fn: listener, once: false }]);
+            this.events.set(eventName, [{ fn: listener, once }]);
         }
 
         if (
@@ -105,14 +105,20 @@ export default class EventEmitter {
         return this._addListener(eventName, listener, true);
     }
 
-    public prependListener(eventName: string | symbol, listener: Function): EventEmitter {
+    public prependListener(eventName: string | symbol, listener: Function, once: boolean): EventEmitter {
         if (this.events.has(eventName)) {
             const listeners = this.events.get(eventName) as Listener[];
 
-            listeners.unshift({ fn: listener, once: false });
+            listeners.unshift({ fn: listener, once });
         } else {
-            this.events.set(eventName, [{ fn: listener, once: false }]);
+            this.events.set(eventName, [{ fn: listener, once }]);
         }
+
+        return this;
+    }
+
+    public prependOnceListener(eventName: string | symbol, listener: Function): EventEmitter {
+        this.prependListener(eventName, listener, true);
 
         return this;
     }
@@ -128,9 +134,9 @@ export default class EventEmitter {
             }
 
             this.events.delete(eventName);
+        } else {
+            this.events.clear();
         }
-
-        this.events.clear();
 
         return this;
     }
@@ -155,6 +161,7 @@ export default class EventEmitter {
                 this.events.delete(eventName);
             }
         }
+
         return this;
     }
 }
