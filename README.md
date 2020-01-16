@@ -29,3 +29,25 @@ const eventEmitter = new EventEmitter();
 
 eventEmitter.addListener('listener', () => console.log('listener'));
 ```
+
+### emit
+Calls each listener associated with the passed `eventName` in the order that they were added. Additional arguments are passed to each listener callback.
+
+`params`
+
+* `eventName` **{string} | {symbol}** (required) The name of the event being emitted
+* `...args` **{any[]}** (Optional) Arguments to be passed to each listener callback
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.add('test', (msg: string) => console.log('msg: ', msg));
+
+eventEmitter.emit('test', 'hello world');
+
+// Output: 'msg: hello world'
+```
