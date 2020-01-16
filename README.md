@@ -6,7 +6,26 @@
 ## API
 
 ### EventEmitter
+Create an Event Emitter.
 
 ```ts
 const eventEmitter = new EventEmitter();
+```
+
+### addListener
+Add's a new event listener to the end of the `events` set
+
+`params`
+
+* `eventName` **{string} | {symbol}** (required) The name of the event being added
+* `listener` **{Function}** (required) The callback function
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.addListener('listener', () => console.log('listener'));
 ```
