@@ -9,11 +9,19 @@
 Create an Event Emitter.
 
 ```ts
+// New EventEmitter
 const eventEmitter = new EventEmitter();
+
+// Extend a custom class
+class MyClass extends EventEmitter {
+    constructor() {
+        super();
+    }
+}
 ```
 
 ### addListener
-Add's a new event listener to the end of the `events` set
+Adds a new event listener to the end of the `listener` array that is associated with the passed key(`eventName`). If no key is found, it will set a new element using the passed `eventName` and `listener`.
 
 `params`
 
@@ -50,4 +58,43 @@ eventEmitter.add('test', (msg: string) => console.log('msg: ', msg));
 eventEmitter.emit('test', 'hello world');
 
 // Output: 'msg: hello world'
+```
+
+### getListenerCount
+Returns the number of listeners associated with the passed `eventName`
+
+`params`
+
+* `eventName` **{string} | {symbol}** (required) The name of the event to get the listener count of
+
+`returns`
+
+* **{number}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.addListener('msg', (msg: msg) => console.log('msg: ', msg));
+
+eventEmitter.getListenerCount('msg'); // will return 1
+eventEmitter.getListenerCount('doesntExist'); // will return 0
+```
+
+### setMaxListeners
+Sets the maximum number of listeners on **this** instance of the EventEmitter
+
+`params`
+
+* `num` **{number}** (required) The number of maximum listeners
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.setMaxListeners(5);
+
+console.log(eventEmitter.maxListeners); // will print 5
 ```
