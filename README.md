@@ -3,9 +3,18 @@
 [![Build Status](https://travis-ci.com/ElijahKotyluk/ts-eventemitter.svg?branch=master)](https://travis-ci.com/ElijahKotyluk/ts-eventemitter)
 [![codecov](https://codecov.io/gh/ElijahKotyluk/ts-eventemitter/branch/master/graph/badge.svg)](https://codecov.io/gh/ElijahKotyluk/ts-eventemitter)
 
+## Installation
+
+```md
+npm install ts-eventemitter
+
+yarn add ts-eventemitter
+```
+
 ## API
 
 ### EventEmitter
+
 Create an Event Emitter.
 
 ```ts
@@ -21,6 +30,7 @@ class MyClass extends EventEmitter {
 ```
 
 ### addListener
+
 Adds a new event listener to the end of the `listener` array that is associated with the passed key(`eventName`). If no key is found, it will set a new element using the passed `eventName` and `listener`.
 
 `params`
@@ -39,6 +49,7 @@ eventEmitter.addListener('listener', () => console.log('listener'));
 ```
 
 ### emit
+
 Calls each listener associated with the passed `eventName` in the order that they were added. Additional arguments are passed to each listener callback.
 
 `params`
@@ -61,7 +72,8 @@ eventEmitter.emit('test', 'hello world');
 ```
 
 ### getListenerCount
-Returns the number of listeners associated with the passed `eventName`
+
+Returns the number of listeners associated with the passed `eventName`.
 
 `params`
 
@@ -81,7 +93,8 @@ eventEmitter.getListenerCount('doesntExist'); // will return 0
 ```
 
 ### setMaxListeners
-Sets the maximum number of listeners on **this** instance of the EventEmitter
+
+Sets the maximum number of listeners on **this** instance of the EventEmitter.
 
 `params`
 
@@ -97,4 +110,180 @@ const eventEmitter = new EventEmitter();
 eventEmitter.setMaxListeners(5);
 
 console.log(eventEmitter.maxListeners); // will print 5
+```
+
+### listeners
+
+Returns the listeners associated with the passed key(`eventName`), if no key was found, returns an empty array `[]`.
+
+`params`
+
+* `eventName` **{string} | {symbol}**
+
+`returns`
+
+* `listeners` **{Listener[]}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.addListener('event', () => null)
+
+eventEmitter.listeners('event') // returns [ { fn: [Function], once: false } ]
+```
+
+### off
+
+alias for `EventEmitter.removeListener()`
+
+`params`
+
+* `eventName` **{string} | {symbol}**
+* `listener` **{Function}**
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.on('msg', (msg: string) => console.log('msg: ', msg));
+
+eventEmitter.off('msg', (msg:string) => console.log('msg: ', msg));
+```
+
+### on
+
+alias for `eventEmitter.addListener()`
+
+`params`
+
+* `eventName` **{string} | {symbol}**
+* `listener` **{Function}**
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.on('msg', (msg: string) => console.log('msg: ', msg));
+```
+
+### once
+
+Adds a listener associated to the passed key(`eventName`) that is triggered once and then removed.
+
+`params`
+
+* `eventName` **{string} | {symbol}**
+* `listener` **{Function}**
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.once('msg', (msg: string) => console.log('msg: ', msg));
+
+eventEmitter.emit('msg', 'hello world'); // prints 'msg: hello world'
+
+eventEmitter.listeners('msg'); // returns []
+```
+
+### prependListener
+
+Adds the passed `listener` to the beginning of the listener array associated with the given `eventName`.
+
+`params`
+
+* `eventName` **{string} | {symbol}**
+* `listener` **{Function}**
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.addListener('msg', () => 'called second');
+
+eventEmitter.prependListener('msg', () => 'called first');
+
+eventEmitter.emit('msg');
+// Ouput:
+//  'called first'
+//  'called second'
+```
+
+### prependOnceListener
+
+Adds the passed `listener` to the beginning of the listener array associated with the given `eventName`, once triggered will be removed.
+
+`params`
+
+* `eventName` **{string} | {symbol}**
+* `listener` **{Function}**
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.prependOnceListener('msg', () => 'One time');
+
+eventEmitter.emit('msg');
+
+eventEmitter.listeners('msg'); // returns []
+```
+
+### removeAllListeners
+
+Removes all listeners associated with the passed `eventName`, if no `eventName` was given, all listeners are removed entirely.
+
+`params`
+
+* `eventName` **{string} | {symbol}** (optional)
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.addListener('msg', () => console.log('gets removed'));
+eventEmitter.addListener('msg2', () => console.log('also gets removed'));
+
+eventEmitter.removeAllListeners();
+```
+
+### removeListener
+
+Removes `listener` associated with the passed `eventName`
+
+`params`
+
+* `eventName` **{string} | {symbol}** (optional)
+
+`returns`
+
+* `this` **{EventEmitter}**
+
+```ts
+const eventEmitter = new EventEmitter();
+
+eventEmitter.addListener('msg', () => console.log('gets removed'));
+eventEmitter.addListener('msg', () => console.log('does not get removed'));
+
+eventEmitter.removeListener('msg', () => console.log('gets removed'));
+
+eventEmitter.listeners('msg'); // returns [{ fn: Function, once: false }]
 ```
