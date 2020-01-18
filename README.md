@@ -3,13 +3,6 @@
 [![Build Status](https://travis-ci.com/ElijahKotyluk/ts-eventemitter.svg?branch=master)](https://travis-ci.com/ElijahKotyluk/ts-eventemitter)
 [![codecov](https://codecov.io/gh/ElijahKotyluk/ts-eventemitter/branch/master/graph/badge.svg)](https://codecov.io/gh/ElijahKotyluk/ts-eventemitter)
 
-## Installation
-
-```md
-npm install ts-eventemitter
-
-yarn add ts-eventemitter
-```
 
 ## API
 
@@ -55,7 +48,7 @@ Calls each listener associated with the passed `eventName` in the order that the
 `params`
 
 * `eventName` **{string} | {symbol}** (required) The name of the event being emitted
-* `...args` **{any[]}** (Optional) Arguments to be passed to each listener callback
+* `...args` **{any[]}** (Optional) Arguments to be passed to each listener function
 
 `returns`
 
