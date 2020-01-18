@@ -16,10 +16,16 @@ export default class EventEmitter {
             eventName: string | symbol,
             listener: Function,
             once: boolean,
+            prepend: boolean,
         ): EventEmitter {
 
         if (this.events.has(eventName)) {
             const listeners = this.events.get(eventName) as Listener[];
+
+            if (prepend) {
+                listeners.unshift({ fn: listener, once});
+            }
+
             listeners.push({ fn: listener, once});
         } else {
             this.events.set(eventName, [{ fn: listener, once }]);
@@ -38,7 +44,7 @@ export default class EventEmitter {
     }
 
     public addListener(eventName: string | symbol, listener: Function): EventEmitter {
-        return this._addListener(eventName, listener, false);
+        return this._addListener(eventName, listener, false, false);
     }
 
     public emit(eventName: string | symbol, ...args: any[]): EventEmitter {
@@ -96,31 +102,21 @@ export default class EventEmitter {
     }
 
     public on(eventName: string | symbol, listener: Function): EventEmitter {
-        this._addListener(eventName, listener, false);
+        this._addListener(eventName, listener, false, false);
 
         return this;
     }
 
     public once(eventName: string | symbol, listener: Function): EventEmitter {
-        return this._addListener(eventName, listener, true);
+        return this._addListener(eventName, listener, true, false);
     }
 
-    public prependListener(eventName: string | symbol, listener: Function, once: boolean): EventEmitter {
-        if (this.events.has(eventName)) {
-            const listeners = this.events.get(eventName) as Listener[];
-
-            listeners.unshift({ fn: listener, once });
-        } else {
-            this.events.set(eventName, [{ fn: listener, once }]);
-        }
-
-        return this;
+    public prependListener(eventName: string | symbol, listener: Function): EventEmitter {
+        return this._addListener(eventName, listener, false, true);
     }
 
     public prependOnceListener(eventName: string | symbol, listener: Function): EventEmitter {
-        this.prependListener(eventName, listener, true);
-
-        return this;
+        return this._addListener(eventName, listener, true, true);
     }
 
     public removeAllListeners(eventName?: string | symbol): EventEmitter {
@@ -158,7 +154,14 @@ export default class EventEmitter {
 
         for (const event of events) {
             if (event.fn.toString() === listener.toString()) {
-                this.events.delete(eventName);
+
+                const arr = events.filter((v) => v.fn.toString() !== listener.toString());
+
+                if (arr.length === 0) {
+                    this.events.delete(eventName);
+                } else {
+                    this.events.set(eventName, arr);
+                }
             }
         }
 

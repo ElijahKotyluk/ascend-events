@@ -111,7 +111,7 @@ Returns the listeners associated with the passed `eventName`, if no key was foun
 
 `params`
 
-* `eventName` **{string} | {symbol}**
+* `eventName` **{string} | {symbol}** (required)
 
 `returns`
 
@@ -131,8 +131,8 @@ alias for `EventEmitter.removeListener()`
 
 `params`
 
-* `eventName` **{string} | {symbol}**
-* `listener` **{Function}**
+* `eventName` **{string} | {symbol}** (required)
+* `listener` **{Function}** (required)
 
 `returns`
 
@@ -152,8 +152,8 @@ alias for `eventEmitter.addListener()`
 
 `params`
 
-* `eventName` **{string} | {symbol}**
-* `listener` **{Function}**
+* `eventName` **{string} | {symbol}** (required)
+* `listener` **{Function}** (required)
 
 `returns`
 
@@ -173,8 +173,8 @@ Adds a listener associated to the passed `eventName` that is triggered once and 
 
 `params`
 
-* `eventName` **{string} | {symbol}**
-* `listener` **{Function}**
+* `eventName` **{string} | {symbol}** (required)
+* `listener` **{Function}** (required)
 
 `returns`
 
@@ -196,8 +196,8 @@ Adds the passed `listener` to the beginning of the listener array associated wit
 
 `params`
 
-* `eventName` **{string} | {symbol}**
-* `listener` **{Function}**
+* `eventName` **{string} | {symbol}** (required)
+* `listener` **{Function}** (required)
 
 `returns`
 
@@ -222,8 +222,8 @@ Adds the passed `listener` to the beginning of the listener array associated wit
 
 `params`
 
-* `eventName` **{string} | {symbol}**
-* `listener` **{Function}**
+* `eventName` **{string} | {symbol}** (required)
+* `listener` **{Function}** (required)
 
 `returns`
 
@@ -266,7 +266,8 @@ Removes `listener` associated with the passed `eventName`
 
 `params`
 
-* `eventName` **{string} | {symbol}** (optional)
+* `eventName` **{string} | {symbol}** (required)
+* `listener` **{Function}** (required)
 
 `returns`
 

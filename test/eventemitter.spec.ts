@@ -107,8 +107,8 @@ describe('EventEmitter', () => {
         const eventEmitter = new EventEmitter();
 
         eventEmitter.addListener('test', () => 'addedListener');
-        eventEmitter.prependListener('test', () => 'prependedListener', false);
-        eventEmitter.prependListener('testTwo', () => 'testTwo', false);
+        eventEmitter.prependListener('test', () => 'prependedListener');
+        eventEmitter.prependListener('testTwo', () => 'testTwo');
 
         const events = eventEmitter.events.get('test') as Listener[];
 
@@ -160,10 +160,27 @@ describe('EventEmitter', () => {
         eventEmitter.addListener('test', () => null);
         eventEmitter.addListener('test', () => null);
         eventEmitter.addListener('anotherTest', () => 1);
+        eventEmitter.addListener('anotherTest', () => 2);
+
+        expect(eventEmitter.listeners('anotherTest')).toHaveLength(2);
+
+        eventEmitter.removeListener('anotherTest', () => 2);
+
+        expect(eventEmitter.listeners('anotherTest')).toHaveLength(1);
 
         expect(eventEmitter.events.size).toBe(2);
         expect(() => eventEmitter.removeListener('test', () => null)).not.toThrow();
         expect(() => eventEmitter.removeListener('test', () => 'errored')).toThrow();
         expect(eventEmitter.events.size).toBe(1);
+    });
+
+    it('testing shit', () => {
+        const ee = new EventEmitter();
+
+        ee.once('msg', (msg: string) => console.log('msg: ', msg));
+
+        ee.emit('msg', 'hello mofo');
+
+        console.log(ee.listeners('msg'));
     });
 });
