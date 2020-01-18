@@ -1,11 +1,11 @@
 {
-  "name": "ts-eventemitter",
+  "name": "ts-event-emitter",
   "version": "0.0.0",
   "description": "a simple event emitter for learning and packaging purposes.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "Elijah Kotyluk",
-  "repository": "git@github.com:ElijahKotyluk/ts-lexer.git",
+  "repository": "git@github.com:ElijahKotyluk/ts-event-emitter.git",
   "license": "MIT",
   "husky": {
     "hooks": {
