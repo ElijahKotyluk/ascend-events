@@ -173,14 +173,4 @@ describe('EventEmitter', () => {
         expect(() => eventEmitter.removeListener('test', () => 'errored')).toThrow();
         expect(eventEmitter.events.size).toBe(1);
     });
-
-    it('testing shit', () => {
-        const ee = new EventEmitter();
-
-        ee.once('msg', (msg: string) => console.log('msg: ', msg));
-
-        ee.emit('msg', 'hello mofo');
-
-        console.log(ee.listeners('msg'));
-    });
 });
