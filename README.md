@@ -31,7 +31,7 @@ class MyClass extends EventEmitter {
 
 ### addListener
 
-Adds a new event listener to the end of the `listener` array that is associated with the passed key(`eventName`). If no key is found, it will set a new element using the passed `eventName` and `listener`.
+Adds a new event listener to the end of the `listener` array that is associated with the passed `eventName`. If no key is found, it will set a new element using the passed `eventName` and `listener`.
 
 `params`
 
@@ -68,7 +68,7 @@ eventEmitter.add('test', (msg: string) => console.log('msg: ', msg));
 
 eventEmitter.emit('test', 'hello world');
 
-// Output: 'msg: hello world'
+// prints 'msg: hello world'
 ```
 
 ### getListenerCount
@@ -88,8 +88,8 @@ const eventEmitter = new EventEmitter();
 
 eventEmitter.addListener('msg', (msg: msg) => console.log('msg: ', msg));
 
-eventEmitter.getListenerCount('msg'); // will return 1
-eventEmitter.getListenerCount('doesntExist'); // will return 0
+eventEmitter.getListenerCount('msg'); // returns 1
+eventEmitter.getListenerCount('doesntExist'); // returns 0
 ```
 
 ### setMaxListeners
@@ -109,12 +109,12 @@ const eventEmitter = new EventEmitter();
 
 eventEmitter.setMaxListeners(5);
 
-console.log(eventEmitter.maxListeners); // will print 5
+console.log(eventEmitter.maxListeners); // prints 5
 ```
 
 ### listeners
 
-Returns the listeners associated with the passed key(`eventName`), if no key was found, returns an empty array `[]`.
+Returns the listeners associated with the passed `eventName`, if no key was found, returns an empty array `[]`.
 
 `params`
 
@@ -170,11 +170,13 @@ alias for `eventEmitter.addListener()`
 const eventEmitter = new EventEmitter();
 
 eventEmitter.on('msg', (msg: string) => console.log('msg: ', msg));
+
+eventEmitter.emit('msg', 'hello world');
 ```
 
 ### once
 
-Adds a listener associated to the passed key(`eventName`) that is triggered once and then removed.
+Adds a listener associated to the passed `eventName` that is triggered once and then removed.
 
 `params`
 
@@ -216,7 +218,7 @@ eventEmitter.addListener('msg', () => 'called second');
 eventEmitter.prependListener('msg', () => 'called first');
 
 eventEmitter.emit('msg');
-// Ouput:
+// prints
 //  'called first'
 //  'called second'
 ```
