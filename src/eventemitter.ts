@@ -137,14 +137,6 @@ export default class EventEmitter {
         return this;
     }
 
-    /**
-     * @TODO
-     * 1) Find better way to compare functions
-     * 2) maybe use `indexOf` instead of `for of`?
-     * @param {string | symbol} eventName
-     * @param {Function} listener
-     * @returns {EventEmitter}
-     */
     public removeListener(eventName: string | symbol, listener: Function): EventEmitter {
         if (!this.events.has(eventName.toString())) {
             throw new Error(`Event listener: ${String(eventName)}, was not found.`);
