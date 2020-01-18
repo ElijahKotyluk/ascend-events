@@ -287,5 +287,5 @@ eventEmitter.addListener('msg', () => console.log('does not get removed'));
 
 eventEmitter.removeListener('msg', () => console.log('gets removed'));
 
-eventEmitter.listeners('msg'); // returns [{ fn: Function, once: false }]
+eventEmitter.emit('msg'); //  prints 'does not get removed'
 ```
