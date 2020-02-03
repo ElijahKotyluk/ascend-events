@@ -1,7 +1,17 @@
-# ts-eventemitter
+# Ascend Events
 
 [![Build Status](https://travis-ci.com/ElijahKotyluk/ts-eventemitter.svg?branch=master)](https://travis-ci.com/ElijahKotyluk/ts-eventemitter)
 [![codecov](https://codecov.io/gh/ElijahKotyluk/ts-eventemitter/branch/master/graph/badge.svg)](https://codecov.io/gh/ElijahKotyluk/ts-eventemitter)
+
+## Installation
+
+```ts
+// npm
+npm install --dev ascend-events
+
+// yarn
+yarn install --dev ascend-events
+```
 
 ## API
 

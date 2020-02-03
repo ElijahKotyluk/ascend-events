@@ -1,7 +1,7 @@
 {
-  "name": "ts-event-emitter",
+  "name": "ascend-events",
   "version": "0.0.0",
-  "description": "a simple event emitter for learning and packaging purposes.",
+  "description": "A simple event emitter for learning and packaging purposes, written in TypeScript.",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "Elijah Kotyluk",
