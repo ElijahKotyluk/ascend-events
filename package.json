@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "A simple event emitter for learning and packaging purposes, written in TypeScript.",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "index.d.ts",
   "author": "Elijah Kotyluk",
   "repository": "git@github.com:ElijahKotyluk/ts-event-emitter.git",
   "license": "MIT",
@@ -27,7 +27,7 @@
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "commit": "yarn git-cz",
-    "clean": "rm -rf /dist/** /node_modules/"
+    "clean": "rm -rf dist node_modules"
   },
   "devDependencies": {
     "@fimbul/valtyr": "^0.21.0",
