@@ -2,10 +2,16 @@
   "name": "ascend-events",
   "version": "0.0.0",
   "description": "A simple event emitter for learning and packaging purposes, written in TypeScript.",
+  "keywords": [
+    "event-emitter",
+    "emitter",
+    "event",
+    "eventemitter"
+  ],
   "main": "dist/index.js",
   "typings": "index.d.ts",
   "author": "Elijah Kotyluk",
-  "repository": "git@github.com:ElijahKotyluk/ts-event-emitter.git",
+  "repository": "git@github.com:ElijahKotyluk/ascend-events.git",
   "license": "MIT",
   "husky": {
     "hooks": {
