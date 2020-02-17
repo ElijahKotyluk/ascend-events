@@ -50,7 +50,7 @@ export default class EventEmitter {
 
     public emit(eventName: string | symbol, ...args: any[]): boolean {
         if (this.events.has(eventName)) {
-            const listeners = this.events.get(eventName)?.slice() as Listener[];
+            const listeners = this.events.get(eventName)!.slice() as Listener[];
 
             for (const listener of listeners) {
                 try {
@@ -135,11 +135,11 @@ export default class EventEmitter {
                 throw new Error(`Event listener: ${String(eventName)}, was not found.`);
             }
 
-            const listeners = this.events.get(eventName)?.slice();
+            const listeners = this.events.get(eventName)!.slice();
             this.events.delete(eventName);
 
             for (const listener in listeners) {
-                if (listener) this.emit('removeListener', eventName, listener);
+                this.emit('removeListener', eventName, listener);
             }
         } else {
             this.events.clear();
