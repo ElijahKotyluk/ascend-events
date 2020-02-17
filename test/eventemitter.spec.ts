@@ -29,25 +29,25 @@ describe('EventEmitter', () => {
     it('emit', () => {
         const eventEmitter = new EventEmitter();
         const fn = jest.fn();
+        const errListener = () => {
+            throw new Error('error');
+        };
 
         eventEmitter.once('test', fn);
-
-        expect(eventEmitter.events.get('test')).toHaveLength(1);
-
         eventEmitter.emit('test', true);
 
-        expect(eventEmitter.events.get('test')).toBeUndefined();
         expect(fn).toHaveBeenCalledTimes(1);
         expect(fn).toHaveBeenCalledWith(true);
 
         eventEmitter.addListener('test', fn);
-        eventEmitter.emit('test', true);
-        eventEmitter.addListener('error', () => { throw new Error(); });
+        eventEmitter.emit('test', new Error('Error'));
+        eventEmitter.addListener('test', errListener);
 
         expect(fn).toHaveBeenCalledTimes(2);
-        expect(fn).toHaveBeenLastCalledWith(true);
-        expect(() => eventEmitter.emit('error')).toThrowError();
+        expect(fn).toHaveBeenLastCalledWith(Error('Error'));
+        expect(() => eventEmitter.emit('error')).toThrow('Unhandled error.');
         expect(eventEmitter.emit('doesntExist')).toBe(false);
+        expect(() => eventEmitter.emit('test')).toThrowError('error');
     });
 
     it('getListenerCount', () => {
