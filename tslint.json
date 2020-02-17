@@ -18,6 +18,7 @@
             "single"
         ],
         "curly": false,
+        "forin": false,
         "radix": false,
         "interface-name": false
     },
