@@ -17,6 +17,7 @@
             true,
             "single"
         ],
+        "curly": false,
         "radix": false,
         "interface-name": false
     },
