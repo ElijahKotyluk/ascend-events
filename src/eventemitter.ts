@@ -13,11 +13,12 @@ export default class EventEmitter {
     }
 
     private _addListener(
-            eventName: string | symbol,
-            listener: Function,
-            once: boolean,
-            prepend: boolean,
-        ): EventEmitter {
+        eventName: string | symbol,
+        listener: Function,
+        once: boolean,
+        prepend: boolean,
+    ): EventEmitter {
+        this.emit('newListener', eventName, listener);
 
         if (this.events.has(eventName)) {
             const listeners = this.events.get(eventName) as Listener[];
@@ -47,9 +48,9 @@ export default class EventEmitter {
         return this._addListener(eventName, listener, false, false);
     }
 
-    public emit(eventName: string | symbol, ...args: any[]): EventEmitter {
+    public emit(eventName: string | symbol, ...args: any[]): boolean {
         if (this.events.has(eventName)) {
-            const listeners = this.events.get(eventName) as Listener[];
+            const listeners = this.events.get(eventName)!.slice() as Listener[];
 
             for (const listener of listeners) {
                 try {
@@ -59,12 +60,17 @@ export default class EventEmitter {
                         this.removeListener(eventName, listener.fn);
                     }
                 } catch (err) {
-                    throw err;
+                    this.emit('error', err);
                 }
             }
+
+            return true;
+        } else if (eventName === 'error') {
+            const error = args.length > 0 ? args[0] : Error('Unhandled error.');
+            throw error;
         }
 
-        return this;
+        return false;
     }
 
     public getListenerCount(eventName: string | symbol): number {
@@ -125,11 +131,16 @@ export default class EventEmitter {
         }
 
         if (eventName) {
-            if (!this.events.has(eventName.toString())) {
+            if (!this.events.has(eventName)) {
                 throw new Error(`Event listener: ${String(eventName)}, was not found.`);
             }
 
+            const listeners = this.events.get(eventName)!.slice();
             this.events.delete(eventName);
+
+            for (const listener in listeners) {
+                this.emit('removeListener', eventName, listener);
+            }
         } else {
             this.events.clear();
         }
@@ -138,7 +149,7 @@ export default class EventEmitter {
     }
 
     public removeListener(eventName: string | symbol, listener: Function): EventEmitter {
-        if (!this.events.has(eventName.toString())) {
+        if (!this.events.has(eventName)) {
             throw new Error(`Event listener: ${String(eventName)}, was not found.`);
         }
 
@@ -148,6 +159,7 @@ export default class EventEmitter {
             if (event.fn.toString() === listener.toString()) {
 
                 const arr = events.filter((v) => v.fn.toString() !== listener.toString());
+                this.emit('removeListener', eventName, listener);
 
                 if (arr.length === 0) {
                     this.events.delete(eventName);
