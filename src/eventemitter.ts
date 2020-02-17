@@ -66,8 +66,8 @@ export default class EventEmitter {
 
             return true;
         } else if (eventName === 'error') {
-            const errMsg = args.length > 0 ? args[0] : Error('Unhandled error.');
-            throw errMsg;
+            const error = args.length > 0 ? args[0] : Error('Unhandled error.');
+            throw error;
         }
 
         return false;

@@ -47,7 +47,7 @@ describe('EventEmitter', () => {
         expect(fn).toHaveBeenCalledTimes(2);
         expect(fn).toHaveBeenLastCalledWith(true);
         expect(() => eventEmitter.emit('error')).toThrowError();
-        expect(eventEmitter.emit('doesntExist')).toBeInstanceOf(EventEmitter);
+        expect(eventEmitter.emit('doesntExist')).toBe(false);
     });
 
     it('getListenerCount', () => {
