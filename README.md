@@ -20,6 +20,8 @@ yarn install ascend-events
 Create an Event Emitter.
 
 ```ts
+import { EventEmitter } from 'ascend-events';
+
 // New EventEmitter
 const eventEmitter = new EventEmitter();
 
