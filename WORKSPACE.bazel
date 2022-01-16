@@ -66,6 +66,11 @@ yarn_install(
 )
 # install_bazel_dependencies()
 # # Pull in install_bazel_dependencies
+http_archive(
+    name = "build_bazel_rules_typescript",
+    sha256 = "",
+    urls = [""],
+)
 # load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
 # install_bazel_dependencies()
 
