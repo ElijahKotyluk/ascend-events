@@ -1,6 +1,6 @@
 {
   "name": "ascend-events",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A simple event emitter for learning and packaging purposes, written in TypeScript.",
   "keywords": [
     "event-emitter",
@@ -29,12 +29,14 @@
   "scripts": {
     "deps": "bazel run @nodejs//:yarn_node_repositories",
     "lint": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
+    "build:all": "bazel build //...",
     "build": "tsc",
     "lint:fix": "yarn lint --fix",
     "test:coverage": "jest --coverage",
     "test:unit": "jest",
     "commit": "yarn git-cz",
-    "clean": "rm -rf dist node_modules"
+    "clean": "rm -rf dist node_modules",
+    "watch": "ibazel build //..."
   },
   "devDependencies": {
     "@bazel/bazelisk": "latest",
