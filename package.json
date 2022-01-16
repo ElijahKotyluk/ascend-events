@@ -27,6 +27,7 @@
     ]
   },
   "scripts": {
+    "deps": "bazel run @nodejs//:yarn_node_repositories",
     "lint": "wotan -m @fimbul/valtyr test/** src/** -e 'test/__snapshots__'",
     "build": "tsc",
     "lint:fix": "yarn lint --fix",
@@ -36,6 +37,10 @@
     "clean": "rm -rf dist node_modules"
   },
   "devDependencies": {
+    "@bazel/bazelisk": "latest",
+    "@bazel/buildifier": "latest",
+    "@bazel/ibazel": "latest",
+    "@bazel/typescript": "latest",
     "@fimbul/valtyr": "^0.21.0",
     "@fimbul/wotan": "^0.21.1",
     "@types/jest": "^24.0.25",
