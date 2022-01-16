@@ -1,0 +1,83 @@
+# Declares that this directory is the root of a Bazel workspace.
+# See https://docs.bazel.build/versions/main/build-ref.html#workspace
+workspace(
+    # How this workspace would be referenced with absolute labels from another workspace
+    name = "app",
+    # Map the @npm bazel workspace to the node_modules directory.
+    # This lets Bazel use the same node_modules as other local tooling.
+    managed_directories = {"@npm": ["node_modules"]},
+)
+
+# Pull in http_archive tool
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "bazel_skylib",
+    urls = [
+        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.1.1/bazel-skylib-1.1.1.tar.gz",
+        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.1.1/bazel-skylib-1.1.1.tar.gz",
+    ],
+    sha256 = "c6966ec828da198c5d9adbaa94c05e3a1c7f21bd012a0b29ba8ddbccb2c93b0d",
+)
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+bazel_skylib_workspace()
+
+# Specify node and yarn versions, will need to grab the files to manually pull in the correct versions
+# node_repositories(
+#     package_json = ["//:package.json"],
+#     node_version = "14.18.2",
+#     yarn_version = "1.22.17",
+# )
+
+
+# NOTE: this rule does NOT install your npm dependencies into your node_modules folder.
+# You must still run the package manager to do this.
+# node_repositories(
+#   node_version = "8.10.0",
+#   yarn_version = "1.5.1",
+#   node_repositories = {
+#     "8.10.0-darwin_amd64": ("node-v8.10.0-darwin-x64.tar.gz", "node-v8.10.0-darwin-x64", "7d77bd35bc781f02ba7383779da30bd529f21849b86f14d87e097497671b0271"),
+#     "8.10.0-linux_amd64": ("node-v8.10.0-linux-x64.tar.xz", "node-v8.10.0-linux-x64", "92220638d661a43bd0fee2bf478cb283ead6524f231aabccf14c549ebc2bc338"),
+#     "8.10.0-windows_amd64": ("node-v8.10.0-win-x64.zip", "node-v8.10.0-win-x64", "936ada36cb6f09a5565571e15eb8006e45c5a513529c19e21d070acf0e50321b"),
+#   },
+#   yarn_repositories = {
+#     "1.5.1": ("yarn-v1.5.1.tar.gz", "yarn-v1.5.1", "cd31657232cf48d57fdbff55f38bfa058d2fb4950450bd34af72dac796af4de1"),
+#   },
+#   node_urls = ["https://nodejs.org/dist/v{version}/{filename}"],
+#   yarn_urls = ["https://github.com/yarnpkg/yarn/releases/download/v{version}/{filename}"],
+#   package_json = ["//:package.json"])
+
+# Pull in yarn_intall from nodejs rules
+http_archive(
+    name = "build_bazel_rules_nodejs",
+    sha256 = "d63ecec7192394f5cc4ad95a115f8a6c9de55c60d56c1f08da79c306355e4654",
+    urls = ["https://github.com/bazelbuild/rules_nodejs/releases/download/4.6.1/rules_nodejs-4.6.1.tar.gz"],
+)
+
+load("@build_bazel_rules_nodejs//:index.bzl", "node_repositories", "yarn_install")
+
+node_repositories(package_json = ["//:package.json"])
+
+# Setup yarn and package.json
+yarn_install(
+    name = "npm",
+    package_json = "//:package.json",
+    yarn_lock = "//:yarn.lock",
+)
+# install_bazel_dependencies()
+# # Pull in install_bazel_dependencies
+# load("@npm//:install_bazel_dependencies.bzl", "install_bazel_dependencies")
+# install_bazel_dependencies()
+
+# http_archive(
+#     name = "@npm_bazel_typescript//:index.bzl",
+#     sha256 = "",
+#     urls = [""]
+# )
+
+# load("@build_bazel_rules_typescript//:package.bzl", "rules_typescript_dev_dependencies")
+# 
+
+# Pull in ts_setup_workspace
+# load("@npm//@bazel/typescript:index.bzl", "ts_setup_workspace")
+# ts_setup_workspace()
