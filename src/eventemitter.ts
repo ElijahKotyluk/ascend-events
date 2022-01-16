@@ -1,5 +1,5 @@
 export interface Listener {
-    fn: Function;
+    fn: (...args: any[]) => void;
     once: boolean;
 }
 
@@ -14,7 +14,7 @@ export default class EventEmitter {
 
     private _addListener(
         eventName: string | symbol,
-        listener: Function,
+        listener: (...args: any[]) => void,
         once: boolean,
         prepend: boolean,
     ): EventEmitter {
@@ -44,7 +44,7 @@ export default class EventEmitter {
         return this;
     }
 
-    public addListener(eventName: string | symbol, listener: Function): EventEmitter {
+    public addListener(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         return this._addListener(eventName, listener, false, false);
     }
 
@@ -101,27 +101,27 @@ export default class EventEmitter {
         return listeners;
     }
 
-    public off(eventName: string | symbol, listener: Function): EventEmitter {
+    public off(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         this.removeListener(eventName, listener);
 
         return this;
     }
 
-    public on(eventName: string | symbol, listener: Function): EventEmitter {
+    public on(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         this._addListener(eventName, listener, false, false);
 
         return this;
     }
 
-    public once(eventName: string | symbol, listener: Function): EventEmitter {
+    public once(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         return this._addListener(eventName, listener, true, false);
     }
 
-    public prependListener(eventName: string | symbol, listener: Function): EventEmitter {
+    public prependListener(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         return this._addListener(eventName, listener, false, true);
     }
 
-    public prependOnceListener(eventName: string | symbol, listener: Function): EventEmitter {
+    public prependOnceListener(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         return this._addListener(eventName, listener, true, true);
     }
 
@@ -148,7 +148,7 @@ export default class EventEmitter {
         return this;
     }
 
-    public removeListener(eventName: string | symbol, listener: Function): EventEmitter {
+    public removeListener(eventName: string | symbol, listener: (...args: any[]) => void): EventEmitter {
         if (!this.events.has(eventName)) {
             throw new Error(`Event listener: ${String(eventName)}, was not found.`);
         }

@@ -1,6 +1,6 @@
 {
   "name": "ascend-events",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A simple event emitter for learning and packaging purposes, written in TypeScript.",
   "keywords": [
     "event-emitter",
