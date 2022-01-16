@@ -1,0 +1,16 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@npm//@bazel/typescript:index.bzl", "ts_project")
+
+ts_project(
+    name = "src",
+    # glob is a quick way to select all the code,
+    # but has performance penalty in that Bazel must evaluate it.
+    srcs = glob(["src/*.ts"]),
+    tsconfig = "//:tsconfig.json",
+    declaration = True,
+    allow_js = True,
+    source_map = True,
+    declaration_map = True,
+    # output_group = "es5_sources",
+)
