@@ -40,7 +40,7 @@ Adds a new event listener to the end of the `listener` array that is associated 
 `params`
 
 * `eventName` **{string} | {symbol}** (required) The name of the event being added
-* `listener` **{Function}** (required) The callback function
+* `listener` **{(...args: any[]) => void}** (required) The callback function
 
 `returns`
 
@@ -133,7 +133,7 @@ const eventEmitter = new EventEmitter();
 
 eventEmitter.addListener('event', () => null)
 
-eventEmitter.listeners('event') // returns [ { fn: [Function], once: false } ]
+eventEmitter.listeners('event') // returns [ { fn: [(...args: any[]) => void], once: false } ]
 ```
 
 ### off
@@ -143,7 +143,7 @@ alias for `EventEmitter.removeListener()`
 `params`
 
 * `eventName` **{string} | {symbol}** (required)
-* `listener` **{Function}** (required)
+* `listener` **{(...args: any[]) => void}** (required)
 
 `returns`
 
@@ -164,7 +164,7 @@ alias for `eventEmitter.addListener()`
 `params`
 
 * `eventName` **{string} | {symbol}** (required)
-* `listener` **{Function}** (required)
+* `listener` **{(...args: any[]) => void}** (required)
 
 `returns`
 
@@ -185,7 +185,7 @@ Adds a listener associated to the passed `eventName` that is triggered once and 
 `params`
 
 * `eventName` **{string} | {symbol}** (required)
-* `listener` **{Function}** (required)
+* `listener` **{(...args: any[]) => void}** (required)
 
 `returns`
 
@@ -208,7 +208,7 @@ Adds the passed `listener` to the beginning of the listener array associated wit
 `params`
 
 * `eventName` **{string} | {symbol}** (required)
-* `listener` **{Function}** (required)
+* `listener` **{(...args: any[]) => void}** (required)
 
 `returns`
 
@@ -234,7 +234,7 @@ Adds the passed `listener` to the beginning of the listener array associated wit
 `params`
 
 * `eventName` **{string} | {symbol}** (required)
-* `listener` **{Function}** (required)
+* `listener` **{(...args: any[]) => void}** (required)
 
 `returns`
 
@@ -278,7 +278,7 @@ Removes `listener` associated with the passed `eventName`
 `params`
 
 * `eventName` **{string} | {symbol}** (required)
-* `listener` **{Function}** (required)
+* `listener` **{(...args: any[]) => void}** (required)
 
 `returns`
 
